@@ -1,13 +1,12 @@
 {
+  "name": "chicken-breed-identification",
+  "displayName": "chicken-breed-identification",
   "expo": {
-    "scheme": "acme",
-    "web": {
-      "bundler": "metro"
-    },
     "name": "chicken-breed-identification",
     "slug": "chicken-breed-identification",
-    "experiments": {
-      "tsconfigPaths": true
-    }
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
   }
 }
