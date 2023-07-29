@@ -1,41 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { View, Text, Image } from 'react-native';
-import * as tf from '@tensorflow/tfjs';
-import { fetch, decodeJpeg } from '@tensorflow/tfjs-react-native';
-import * as mobilenet from '@tensorflow-models/mobilenet';
+import { useTensor } from './hooks/useTensor';
 
 const App = () => {
-  const [isTfReady, setIsTfReady] = useState(false);
-  const [result, setResult] = useState('');
+  //const image = require('./basketball.jpg');
+  const { isTfReady, result, startTFJSModel } = useTensor();
   const image = useRef(null);
 
-  const load = async () => {
-    try {
-      // Load mobilenet.
-      await tf.ready();
-      const model = await mobilenet.load();
-      setIsTfReady(true);
-
-      // Start inference and show result.
-      const image = require('./basketball.jpg');
-      const imageAssetPath = Image.resolveAssetSource(image);
-      const response = await fetch(imageAssetPath.uri, {}, { isBinary: true });
-      const imageDataArrayBuffer = await response.arrayBuffer();
-      const imageData = new Uint8Array(imageDataArrayBuffer);
-      const imageTensor = decodeJpeg(imageData);
-      const prediction = await model.classify(imageTensor);
-      if (prediction && prediction.length > 0) {
-        setResult(
-          `${prediction[0].className} (${prediction[0].probability.toFixed(3)})`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    load();
+  React.useEffect(() => {
+    (async () => {
+      await startTFJSModel();
+    })();
   }, []);
 
   return (
